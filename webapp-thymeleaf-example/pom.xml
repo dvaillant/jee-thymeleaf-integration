@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>jee.thymeleaf</groupId>
+		<artifactId>jee-thymeleaf-project</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>servlet-thymeleaf</artifactId>
+	<packaging>war</packaging>
+
+	<properties>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+
+		<!-- App servers -->
+		<payara.version>5.181</payara.version>
+		<version.wildfly.swarm>2018.5.0</version.wildfly.swarm>
+		<jee.version>8.0</jee.version>
+
+	</properties>
+
+	<profiles>
+
+		<profile>
+			<id>swarm</id>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.wildfly.swarm</groupId>
+						<artifactId>bom</artifactId>
+						<version>${version.wildfly.swarm}</version>
+						<scope>import</scope>
+						<type>pom</type>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+
+			<dependencies>
+
+				<!-- Wildfly Swarm Fractions -->
+				<dependency>
+					<groupId>org.wildfly.swarm</groupId>
+					<artifactId>web</artifactId>
+				</dependency>
+			</dependencies>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.wildfly.swarm</groupId>
+						<artifactId>wildfly-swarm-plugin</artifactId>
+						<version>${version.wildfly.swarm}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>package</goal>
+								</goals>
+								<configuration>
+									<hollow>true</hollow>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+
+			</build>
+		</profile>
+		<profile>
+			<id>payara</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<version>2.6</version>
+						<executions>
+							<execution>
+								<id>copy-payara-micro</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<stripVersion>true</stripVersion>
+									<silent>true</silent>
+									<artifactItems>
+										<artifactItem>
+											<groupId>fish.payara.extras</groupId>
+											<artifactId>payara-micro</artifactId>
+											<version>${payara.version}</version>
+											<type>jar</type>
+										</artifactItem>
+									</artifactItems>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Thymeleaf jee fragment dependency -->
+		<dependency>
+			<groupId>jee.thymeleaf</groupId>
+			<artifactId>thymeleaf</artifactId>
+		</dependency>
+
+	</dependencies>
+</project>

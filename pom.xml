@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>jee.thymeleaf</groupId>
+	<artifactId>jee-thymeleaf-project</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>jee-thymeleaf</module>
+		<module>webapp-thymeleaf-example</module>
+	</modules>
+
+	<properties>
+		<!--Compiler -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<!-- jee plateform -->
+		<jee.version>8.0</jee.version>
+		<microprofile.version>1.2</microprofile.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.thymeleaf</groupId>
+				<artifactId>thymeleaf</artifactId>
+				<version>3.0.9.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>javaee-api</artifactId>
+				<version>${jee.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>jee.thymeleaf</groupId>
+				<artifactId>thymeleaf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+		</dependencies>
+	</dependencyManagement>
+
+</project>
